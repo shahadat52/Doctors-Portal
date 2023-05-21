@@ -5,13 +5,13 @@ import backgroundImage from '../../../assets/images/bg.png'
 
 const Banner = () => {
     return (
-        <div className="hero " style={{
+        <div className="hero pb-[223px]  " style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
         }}>
-            <div className="hero-content flex-col lg:flex-row-reverse">
+            <div className=" hero-content flex-col lg:flex-row-reverse">
                 <img alt='' src={chair} className="w-1/2 sm:h-[225px] lg:h-[335px]  rounded-lg shadow-2xl" />
                 <div>
                     <h1 className="text-5xl font-[700]">Your New Smile Starts Here</h1>
