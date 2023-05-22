@@ -7,18 +7,18 @@ import Service from './Service';
 const serviceData = [
     {
         id: 1,
-        name: "Opening Hours",
-        description: "Open 9:00 am to 5:00 pm everyday",
-        icon: cavity,  
+        name: "Cavity Filling",
+        description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem expedita quos sunt minus deserunt",
+        icon: cavity,
     }, {
         id: 2,
-        name: "Opening Hours",
-        description: "Open 9:00 am to 5:00 pm everyday",
+        name: "Teeth Whitening",
+        description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem expedita quos sunt minus deserunt",
         icon: whitening,
     }, {
         id: 3,
-        name: "Opening Hours",
-        description: "Open 9:00 am to 5:00 pm everyday",
+        name: "Fluoride Treatment",
+        description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem expedita quos sunt minus deserunt",
         icon: fluoride,
     },
 ]
@@ -30,12 +30,14 @@ const Services = () => {
                 <h3 className='text-[#19D3AE] font-extrabold text-[20px]'>Our Services</h3>
                 <h2 className='font-medium text-[36px]'>Service We Provide</h2>
             </div>
-            {
-                serviceData.map(service => <Service
-                    key={service.id}
-                    service={service}
-                ></Service>)
-            }
+            <div className='grid gap-4 sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-3 text-white'>
+                {
+                    serviceData.map(service => <Service
+                        key={service.id}
+                        service={service}
+                    ></Service>)
+                }
+            </div>
         </div>
     );
 };
