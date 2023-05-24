@@ -31,7 +31,7 @@ const reviewData = [
 
 const ReviewCards = () => {
     return (
-        <div className='grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-6 '>
+        <div className='grid gap-6 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 px-6 mb-40 '>
             {
                 reviewData.map(review => <ReviewCard
                     key={review.id}

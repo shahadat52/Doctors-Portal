@@ -5,6 +5,7 @@ import Services from './Services/Services';
 import DentalCare from './DentalCare/DentalCare';
 import MakeAppointment from './MakeAppointment/MakeAppointment';
 import PatientsSay from './PatientsSay/PatientsSay';
+import ContractUs from './ContractUs/ContractUs';
 
 const Home = () => {
     return (
@@ -15,6 +16,8 @@ const Home = () => {
             <DentalCare></DentalCare>
             <MakeAppointment></MakeAppointment>
             <PatientsSay></PatientsSay>
+            <ContractUs></ContractUs>
+            
         </div>
     );
 };
