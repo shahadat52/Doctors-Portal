@@ -4,7 +4,7 @@ import footer from '../../../assets/images/footer.png'
 
 const Footer = () => {
     return (
-        <div style={{
+        <footer style={{
             backgroundImage: `url(${footer})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -31,7 +31,7 @@ const Footer = () => {
                 </div>
             </footer>
             <p className='text-center pb-11 text-sm'>Copyright © 2023 - All right reserved</p>
-        </div>
+        </footer>
     );
 };
 
