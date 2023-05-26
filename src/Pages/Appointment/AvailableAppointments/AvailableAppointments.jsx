@@ -4,6 +4,7 @@ import AvailableAppointment from './AvailableAppointment';
 import BookingModal from './BookingModal';
 
 const AvailableAppointments = ({ selectedDate }) => {
+    
 
     // treatment is just another name of appointment option it contain name,_id,slots 
     const [treatment, setTreatment] = useState(null)
@@ -24,15 +25,18 @@ const AvailableAppointments = ({ selectedDate }) => {
                         key={availableOption._id}
                         availableOption={availableOption}
                         setTreatment={setTreatment}
+
                     />)
                 }
             </div>
             {
                 treatment && <BookingModal
-                    selectedDate={selectedDate}
                     treatment={treatment}
+                    selectedDate= {selectedDate}
                     setTreatment = {setTreatment}
-            />}
+
+                ></BookingModal>
+            }
         </section>
     );
 };
