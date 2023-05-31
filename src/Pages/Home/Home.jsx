@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Banner from './Banner/Banner';
 import InfoCards from './InfoCards/InfoCards/InfoCards';
 import Services from './Services/Services';
@@ -8,6 +8,10 @@ import PatientsSay from './PatientsSay/PatientsSay';
 import ContractUs from './ContractUs/ContractUs';
 
 const Home = () => {
+    useEffect(() => {
+        // 👇️ scroll to top on page load
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }, []);
     return (
         <div>
             <Banner></Banner>
@@ -17,7 +21,7 @@ const Home = () => {
             <MakeAppointment></MakeAppointment>
             <PatientsSay></PatientsSay>
             <ContractUs></ContractUs>
-            
+
         </div>
     );
 };

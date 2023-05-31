@@ -1,16 +1,40 @@
-import React from 'react';
-import logo from '../../../assets/images/Doctor Logo.png'
-import { Link } from 'react-router-dom';
-import { useForm } from "react-hook-form";
-
-const SignUp = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => {
-        console.log(data);
+import React, { useContext } from 'react';
+import logo from '../../assets/images/Doctor Logo.png'
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../Context/AuthContext';
+import Swal from "sweetalert2";
 
 
-    }
+const Login = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+
+    const { loginWithEmailAndPassword } = useContext(AuthContext)
+
+    const handleLogin = (data) => {
+        loginWithEmailAndPassword(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                Swal.fire(
+                    'Success',
+                    'User Create success',
+                    'success'
+                )
+                navigate(from, { replace: true })
+                reset()
+            })
+    };
     return (
+
         <div className="min-h-screen flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full bg-gradient-to-r from-cyan-400 via-purple-500 to-indigo-500 rounded-lg shadow-md p-8">
                 <div className="text-center">
@@ -20,48 +44,10 @@ const SignUp = () => {
                         alt="Logo"
                     />
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        Register your account
+                        Log in to your account
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-
-                    <div className='flex justify-between'>
-                        <div>
-                            <input
-                                type="text"
-                                {...register('FName', {
-                                    required: 'First Name is required',
-                                    pattern: {
-                                        message: 'Enter Your Name',
-                                    },
-                                })}
-                                className={`${errors.FName ? 'border-red-500' : 'border-gray-300'
-                                    } appearance-none block  px-3 py-2 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm`}
-                                placeholder="First Name"
-                            />
-                            {errors.FName && (
-                                <p className="mt-2 text-sm text-gray-100 bg-red-500 rounded py-1 text-center mr-5 "> {errors.FName.message}</p>
-                            )}
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                {...register('LName', {
-                                    required: 'Last Name is required',
-                                    pattern: {
-
-                                        message: 'Last Name',
-                                    },
-                                })}
-                                className={`${errors.LName ? 'border-red-500' : 'border-gray-300'
-                                    } appearance-none block  px-3 py-2 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm`}
-                                placeholder="Last Name"
-                            />
-                            {errors.LName && (
-                                <p className="mt-2 text-sm text-gray-100 bg-red-500 rounded py-1 text-center mr-5">{errors.LName.message}</p>
-                            )}
-                        </div>
-                    </div>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleLogin)}>
                     <div>
                         <input
                             type="email"
@@ -77,7 +63,7 @@ const SignUp = () => {
                             placeholder="Email address"
                         />
                         {errors.email && (
-                            <p className="mt-2 text-sm text-gray-100 bg-red-500 rounded py-1 text-center w-1/2">{errors.email.message}</p>
+                            <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
                         )}
                     </div>
                     <div className="mt-4">
@@ -95,7 +81,7 @@ const SignUp = () => {
                             placeholder="Password"
                         />
                         {errors.password && (
-                            <p className="mt-2 text-sm text-gray-100 bg-red-500 rounded py-1  text-center w-1/2">
+                            <p className="mt-2 text-sm text-red-500">
                                 {errors.password.message}
                             </p>
                         )}
@@ -123,10 +109,10 @@ const SignUp = () => {
                             type="submit"
                             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-800 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Sign Up
+                            Log in
                         </button>
-                        <p className='text-center text-xs'> <Link href="#" className="font-medium text-red-200 hover:text-gray-200">
-
+                        <p className='text-center text-xs'>New to Doctors-Portal <Link to="/signUp" className="font-medium text-red-200 hover:text-gray-200">
+                            Create a new account
                         </Link> </p>
                     </div>
                     <div className='mb-[-500px]'>
@@ -138,4 +124,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default Login;

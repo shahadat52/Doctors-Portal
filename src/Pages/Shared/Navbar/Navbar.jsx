@@ -1,17 +1,45 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/images/Doctor Logo.png'
+import { AuthContext } from '../../../Context/AuthContext';
+import Swal from "sweetalert2";
 
-const menuItems = <>
-    <li><Link to="/">Home</Link></li>
-    <li><Link to="/appointment">Appointment</Link></li>
-    <li><Link to="/about">About</Link> </li>
-    <li><Link to="/reviews">Reviews</Link></li>
-    <li><Link to="/contactUs">Contact Us</Link></li>
-    <li><Link to="/login">Login</Link></li>
-</>
+
+
 
 const Navbar = () => {
+    const { user, LogOut } = useContext(AuthContext)
+
+
+    const handleSignOut = () => {
+        LogOut()
+            .then(() => {
+                Swal.fire("User Log Out", "", "success");
+            })
+            .catch((error) => { });
+    }
+
+    const menuItems = <>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/appointment">Appointment</Link></li>
+        <li><Link to="/about">About</Link> </li>
+        <li><Link to="/contactUs">Contact Us</Link></li>
+        {
+            user?.uid ? <>
+                <li><Link to="/reviews">Reviews</Link></li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
+
+                <div className="avatar">
+                    <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                        <img src={user.photoURL} alt='Profile pictures' />
+
+                    </div>
+                </div>
+
+                <li onClick={handleSignOut}><Link>SingOut</Link></li>
+            </> : <li><Link to="/login">Login</Link></li>
+        }
+    </>
     return (
         <div>
             <div className="navbar flex justify-between mb-14">
@@ -24,7 +52,7 @@ const Navbar = () => {
                             {menuItems}
                         </ul>
                     </div>
-                    
+
                     <Link className="btn btn-ghost normal-case text-xl mt-[-25px]"> Doctors Portal <img src={logo} className='w-20 h-20' alt="" /></Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
