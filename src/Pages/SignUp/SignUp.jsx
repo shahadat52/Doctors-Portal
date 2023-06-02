@@ -118,7 +118,6 @@ const SignUp = () => {
                             {...register('photo', {
                                 required: '',
                                 pattern: {
-
                                     message: 'Photo Url',
                                 },
                             })}

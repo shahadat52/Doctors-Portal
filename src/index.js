@@ -4,15 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'react-day-picker/dist/style.css';
-import AuthProvider, { AuthContext } from './Context/AuthContext';
+import AuthProvider from './Context/AuthContext';
+import { QueryClient, QueryClientProvider, } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 
 
+const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+        <Toaster />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
