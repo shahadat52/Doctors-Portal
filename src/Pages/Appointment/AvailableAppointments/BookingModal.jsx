@@ -7,7 +7,7 @@ import DnaLoader from '../../../Utilities/DnaLoader';
 
 
 
-const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
+const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
     const { user, loader, setLoader } = useContext(AuthContext)
     const { name, slots } = treatment
     const date = format(selectedDate, 'PP')
@@ -39,6 +39,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 if (data.acknowledged) {
                     console.log(data);
                     setLoader(false)
@@ -47,12 +48,18 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
                     // Swal.fire('Booking confirm', '', 'success')
                     toast.success('Booking Successfully')
                     form.reset()
+                    refetch()
 
+                }
+
+                else{
+                    setTreatment(null)
+                    toast.error(data.message)
+                    setLoader(false)
                 }
             })
             .catch((error) => {
                 console.error(error);
-                Swal.fire("Opps", error.message, "error");
             });
 
 
@@ -83,9 +90,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
                         <input type="email" name='email' defaultValue={user.email} placeholder="Email" className="input input-bordered w-full " disabled required />
                         <input type="text" name='phone' placeholder="Phone Number" className="input input-bordered w-full " />
                         <input type="submit" value="SUBMIT" className='btn btn-accent w-full' />
-                        {
-                            loader && <DnaLoader />
-                        }
+
                     </form>
 
                 </div>

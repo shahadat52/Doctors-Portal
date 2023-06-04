@@ -1,7 +1,8 @@
-import React from 'react';
 
 const AvailableAppointment = ({ availableOption, setTreatment }) => {
     const { name, slots } = availableOption
+   
+
 
     return (
         <div className=' rounded-2xl w-[425px] h-[230px] shadow-md text-center mx-auto' >
@@ -16,7 +17,7 @@ const AvailableAppointment = ({ availableOption, setTreatment }) => {
                     className="btn bg-gradient-to-r from-primary to-secondary text-white"
                 >BOOKING APPOINTMENT</label>
             </div>
-        </div>
+         </div>
     );
 };
 
