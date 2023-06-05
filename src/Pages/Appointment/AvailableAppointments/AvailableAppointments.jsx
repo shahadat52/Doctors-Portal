@@ -1,19 +1,17 @@
 import { format } from 'date-fns';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AvailableAppointment from './AvailableAppointment';
 import BookingModal from './BookingModal';
 import { useQuery } from '@tanstack/react-query';
-import { AuthContext } from '../../../Context/AuthContext';
 import DnaLoader from '../../../Utilities/DnaLoader';
 
 const AvailableAppointments = ({ selectedDate }) => {
     const date = format(selectedDate, 'PP')
-    const { loader, setLoader } = useContext(AuthContext)
 
     // treatment is just another name of appointment option it contain name,_id,slots 
     const [treatment, setTreatment] = useState(null)
 
-    const { data: availableOptions = [], refetch } = useQuery({
+    const { data: availableOptions = [], refetch, isLoading } = useQuery({
         queryKey: ['appointmentOptions', date],
         queryFn: () => fetch(`http://localhost:5000/appointmentOptions?date=${date}`)
             .then(res => res.json())
@@ -42,9 +40,10 @@ const AvailableAppointments = ({ selectedDate }) => {
     //         .then(res => res.json())
     //         .then(data => setAvailableOptions(data))
     // }, [])
+    if (isLoading) {
+        return <DnaLoader />
+    }
 
-
-    console.log(availableOptions);
     return (
         <section>
             <h3 className='text-[22px] text-secondary text-center mt-60'>Available Services on {format(selectedDate, 'PP')}</h3>

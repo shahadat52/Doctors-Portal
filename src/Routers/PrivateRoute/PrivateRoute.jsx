@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
-import Spinner from '../../Utilities/Spinner';
+import DnaLoader from '../../Utilities/DnaLoader';
 
 const PrivateRoute = ({children}) => {
     const {user, loading} = useContext(AuthContext)
     const location = useLocation();
    
     if(loading){
-        return <Spinner/>
+        return <DnaLoader/>
     }
     if(user){
         return children;

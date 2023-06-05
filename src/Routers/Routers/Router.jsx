@@ -4,10 +4,11 @@ import Home from "../../Pages/Home/Home";
 import Login from "../../Pages/Login/Login";
 import Appointment from "../../Pages/Appointment/Appointment/Appointment";
 import SignUp from "../../Pages/SignUp/SignUp";
-import Dashboard from "../../Pages/Dashboard/Dashboard";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import Reviews from "../../Pages/Reviews/Reviews";
 import About from "../../Pages/About/About";
+import DashboardLayout from "../../Layout/DashboardLayout";
+import MyAppointments from "../../Pages/MyAppointments/MyAppointments";
 
 export const router = createBrowserRouter([
     {
@@ -42,7 +43,13 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <PrivateRoute><Dashboard /></PrivateRoute>,
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
+        children: [
+            {
+                path: '/dashboard',
+                element: <MyAppointments/>
+            }
+        ]
 
     }
 ]) 
