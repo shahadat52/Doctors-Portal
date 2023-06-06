@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../Context/AuthContext';
 
 const MyAppointments = () => {
+    const { user } = useContext(AuthContext)
+    const url = `http://localhost:5000/bookings?email = ${user?.email}`
+    const 
     return (
         <div>
             <div className="overflow-x-auto">
@@ -45,6 +49,9 @@ const MyAppointments = () => {
                     </tbody>
                 </table>
             </div>
+
+
+
         </div>
     );
 };
