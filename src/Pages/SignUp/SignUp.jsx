@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from '../../Context/AuthContext';
 import Swal from "sweetalert2";
 import DnaLoader from '../../Utilities/DnaLoader';
+import { toast } from 'react-hot-toast';
 
 const SignUp = () => {
 
@@ -16,18 +17,15 @@ const SignUp = () => {
 
 
     const handleSignUp = data => {
+        const name = data.FName + ' ' + data.LName;
 
 
         createUser(data.email, data.password)
 
             .then((result) => {
-                const user = result.user;
-                console.log(user, "alhamdulillah");
-
                 const userInfo = {
                     displayName: data.FName + ' ' + data.LName, photoURL: data.photo
-                }
-
+                };
                 updateUser(userInfo)
                     .then(() => {
                         setLoader(false)
@@ -36,10 +34,7 @@ const SignUp = () => {
                             'User Create and Info update success',
                             'success'
                         )
-                        navigate(from, { replace: true });
-                        reset();
-
-
+                        saveUser(data.email, name)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -55,6 +50,27 @@ const SignUp = () => {
 
                 Swal.fire("Opps", error.message, "error");
             });
+
+        const saveUser = (email, name) => {
+            const user = {
+                email: email,
+                name: name
+            };
+            fetch('http://localhost:5000/users', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    navigate(from, { replace: true });
+                    reset();
+                    console.log(data);
+                    toast.success('User data saved')
+                })
+        }
 
 
 

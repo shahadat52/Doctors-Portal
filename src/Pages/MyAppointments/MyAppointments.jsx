@@ -1,57 +1,53 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
+import { useQuery } from '@tanstack/react-query';
 
 const MyAppointments = () => {
     const { user } = useContext(AuthContext)
-    const url = `http://localhost:5000/bookings?email = ${user?.email}`
-    const 
+    const url = `http://localhost:5000/bookings?email=${user?.email}`
+
+    const { data: bookings = [] } = useQuery({
+        queryKey: ['bookings', user?.email],
+        queryFn: async () => {
+            const res = await fetch(url);
+            const data = await res.json();
+            return data
+        }
+    })
+   if(bookings.length === 0){
+    return <p className='text-center text-green-300'>You have no appointment</p>
+   }
     return (
         <div>
+            <p className='text-2xl font-bold mb-7'>My Appointments: {bookings.length}</p>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     {/* head */}
                     <thead>
-                        <tr>
-                            <th></th>
+                        <tr className='text-center'>
+                            <th>No</th>
                             <th>Name</th>
-                            <th>Job</th>
-                            <th>Favorite Color</th>
+                            <th>DATE</th>
+                            <th>TIME</th>
+                            <th>TREATMENT</th>
+                            <th>PAYMENT</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {/* row 1 */}
-                        <tr>
-                            <th>1</th>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Blue</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                            <th>2</th>
-                            <td>Hart Hagerty</td>
-                            <td>Desktop Support Technician</td>
-                            <td>Purple</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr>
-                            <th>3</th>
-                            <td>Brice Swyre</td>
-                            <td>Tax Accountant</td>
-                            <td>Red</td>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <td>Brice Swyre</td>
-                            <td>Tax Accountant</td>
-                            <td>Red</td>
-                        </tr>
+                    <tbody className='text-center'>
+                        {
+                            bookings.map((booking, i) => <tr
+                                key={i}>
+                                <th>{i+1}</th>
+                                <th>{booking.patient}</th>
+                                <td>{booking.appointmentDate}</td>
+                                <td>{booking.slot}</td>
+                                <td>{booking.treatment}</td>
+                                <td> <button className='btn btn-primary'>PAY</button> </td>
+                            </tr>)
+                        }
                     </tbody>
                 </table>
             </div>
-
-
-
         </div>
     );
 };
