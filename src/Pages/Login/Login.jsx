@@ -1,36 +1,36 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import logo from '../../assets/images/Doctor Logo.png'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Context/AuthContext';
 import Swal from "sweetalert2";
+import { toast } from 'react-hot-toast';
+import { useToken } from '../../../src/Hooks/useToken';
 
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm();
-
+    const { register, handleSubmit, reset, formState: { errors }, } = useForm();
     const { loginWithEmailAndPassword } = useContext(AuthContext)
+    const [loginEmail, setLoginEmail] = useState('');
+    const [token] = useToken(loginEmail)
 
+    if (token) {
+        navigate(from, { replace: true })
+        reset()
+    }
     const handleLogin = (data) => {
         loginWithEmailAndPassword(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                Swal.fire(
-                    'Success',
-                    'User Create success',
-                    'success'
-                )
-                navigate(from, { replace: true })
-                reset()
+                setLoginEmail(data.email)
+                toast.success('Successfully login')
+                // Swal.fire('Success', 'User Create success', 'success')
+                // navigate(from, { replace: true })
+                // reset()
             })
     };
     return (

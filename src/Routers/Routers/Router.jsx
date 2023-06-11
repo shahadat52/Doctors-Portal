@@ -9,6 +9,7 @@ import Reviews from "../../Pages/Reviews/Reviews";
 import About from "../../Pages/About/About";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import MyAppointments from "../../Pages/MyAppointments/MyAppointments";
+import AllUsers from "../../Pages/AllUsers/AllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -47,7 +48,11 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard',
-                element: <MyAppointments/>
+                element: <MyAppointments />
+            },
+            {
+                path: '/dashboard/allUsers',
+                element: <AllUsers />
             }
         ]
 

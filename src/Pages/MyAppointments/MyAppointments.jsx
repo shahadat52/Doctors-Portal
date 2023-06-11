@@ -6,17 +6,21 @@ const MyAppointments = () => {
     const { user } = useContext(AuthContext)
     const url = `http://localhost:5000/bookings?email=${user?.email}`
 
-    const { data: bookings = [] } = useQuery({
+    const { data: bookings = []} = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                headers: {
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
             const data = await res.json();
             return data
         }
     })
-   if(bookings.length === 0){
-    return <p className='text-center text-green-300'>You have no appointment</p>
-   }
+    if (bookings.length === 0) {
+        return <p className='text-center text-green-300'>You have no appointment</p>
+    }
     return (
         <div>
             <p className='text-2xl font-bold mb-7'>My Appointments: {bookings.length}</p>
@@ -37,7 +41,7 @@ const MyAppointments = () => {
                         {
                             bookings.map((booking, i) => <tr
                                 key={i}>
-                                <th>{i+1}</th>
+                                <th>{i + 1}</th>
                                 <th>{booking.patient}</th>
                                 <td>{booking.appointmentDate}</td>
                                 <td>{booking.slot}</td>

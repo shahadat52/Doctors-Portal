@@ -1,4 +1,4 @@
-import React, { useContext, } from 'react';
+import React, { useContext, useState, } from 'react';
 import logo from '../../assets/images/Doctor Logo.png'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
@@ -6,6 +6,8 @@ import { AuthContext } from '../../Context/AuthContext';
 import Swal from "sweetalert2";
 import DnaLoader from '../../Utilities/DnaLoader';
 import { toast } from 'react-hot-toast';
+import { useToken } from '../../../src/Hooks/useToken';
+
 
 const SignUp = () => {
 
@@ -14,48 +16,42 @@ const SignUp = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+    const [signUpEmail, setSignUpEmail] = useState('')
+    const [token] = useToken(signUpEmail)
 
 
+    if (token) {
+        console.log('alhamdulillah token set hoyeche');
+        navigate('/')
+    }
     const handleSignUp = data => {
         const name = data.FName + ' ' + data.LName;
-
-
         createUser(data.email, data.password)
-
             .then((result) => {
                 const userInfo = {
                     displayName: data.FName + ' ' + data.LName, photoURL: data.photo
                 };
                 updateUser(userInfo)
                     .then(() => {
-                        setLoader(false)
-                        Swal.fire(
-                            'Success',
-                            'User Create and Info update success',
-                            'success'
-                        )
                         saveUser(data.email, name)
+                        setLoader(false)
+                        toast.success('User Create and Info update success')
                     })
                     .catch((error) => {
                         console.error(error);
                         setLoader(false)
-
                         Swal.fire("Opps", error.message, "error");
                     });
-
 
             })
             .catch((error) => {
                 console.error(error);
-
+                setLoader(false)
                 Swal.fire("Opps", error.message, "error");
             });
 
         const saveUser = (email, name) => {
-            const user = {
-                email: email,
-                name: name
-            };
+            const user = { email, name };
             fetch('http://localhost:5000/users', {
                 method: 'POST',
                 headers: {
@@ -65,15 +61,26 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    navigate(from, { replace: true });
-                    reset();
-                    console.log(data);
+                    setSignUpEmail(email);
                     toast.success('User data saved')
                 })
-        }
+        };
 
-
-
+        // const getAccessToken = (email) => {
+        //     fetch(`http://localhost:5000/jwt?email=${email}`)
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             if (data.accessToken) {
+        //                 localStorage.setItem('accessToken', data.accessToken)
+        //                 toast.success('Token saved');
+        //                 navigate('/')
+        //                 // console.log(data.accessToken);
+        //                 // navigate(from, { replace: true });
+        //                 // reset();
+        //                 // toast.success('Token saved')
+        //             }
+        //         })
+        // }
     }
     return (
         <div className="min-h-screen flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
