@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddDoctor = () => {
+    const navigate = useNavigate()
+    const { register, handleSubmit, reset } = useForm();
 
-    const { register, handleSubmit } = useForm();
-
-    const { data: specialties = [], } = useQuery({
+    const { data: specialties = [],} = useQuery({
         queryKey: ['doctorSpecialty'],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/doctorSpecialty')
@@ -15,9 +17,45 @@ const AddDoctor = () => {
         }
 
     })
-    const handleAddDoctor = (data) => {
-        console.log(data);
 
+
+    const handleAddDoctor = (data) => {
+        const image = data.file[0];
+        const formData = new FormData();
+        formData.append('image', image)
+        const apiKey = process.env.REACT_APP_imgbb_key;
+
+        fetch(`https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgData => {
+                if (imgData.success) {
+                    console.log(imgData.data.url);
+                    toast.success("Image upload successful")
+                    const doctorInfo = {
+                        name: data.name,
+                        email: data.email,
+                        specialty: data.specialty,
+                        image: imgData.data.url
+                    };
+                    fetch('http://localhost:5000/doctor', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(doctorInfo)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data)
+                            toast.success("Doctor added successful")
+                            reset();
+                            navigate('/dashboard/manageDoctors')
+                        })
+                }
+            })
     }
 
     return (
