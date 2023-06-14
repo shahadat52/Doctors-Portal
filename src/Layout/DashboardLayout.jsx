@@ -1,17 +1,18 @@
 import React, { useContext } from 'react';
 import Navbar from '../Pages/Shared/Navbar/Navbar';
 import { Link, Outlet } from 'react-router-dom';
-import AuthProvider, { AuthContext } from '../Context/AuthContext';
+import { AuthContext } from '../Context/AuthContext';
+import { useAdmin } from '../Hooks/useAdmin';
 
 const DashboardLayout = () => {
     const { user } = useContext(AuthContext)
-    console.log(user);
+    const [isAdmin] = useAdmin(user?.email)
     return (
         <div>
             <Navbar />
             <div className="drawer drawer-mobile">
                 <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content  rounded-md">
+                <div className="drawer-content  rounded-md bg-gray-100 p-10">
                     <Outlet></Outlet>
                 </div>
                 <div className="drawer-side">
@@ -19,10 +20,11 @@ const DashboardLayout = () => {
                     <ul className="menu p-4 w-80 bg-base-100 text-base-content">
                         <li><Link to="/dashboard">My Appointments</Link></li>
                         {
-                            user.Role === 'admin' && <li><Link to="/dashboard/allUsers">All Users</Link></li>
+                            isAdmin && <li><Link to="/dashboard/allUsers">All Users</Link></li>
                         }
-                        <li><Link to="/dashboard/allDoctors">All Doctors</Link></li>
-
+                        {
+                            isAdmin && <li><Link to="/dashboard/addDoctor">Add Doctor</Link></li>
+                        }
                     </ul>
 
                 </div>

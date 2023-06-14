@@ -10,6 +10,8 @@ import About from "../../Pages/About/About";
 import DashboardLayout from "../../Layout/DashboardLayout";
 import MyAppointments from "../../Pages/MyAppointments/MyAppointments";
 import AllUsers from "../../Pages/AllUsers/AllUsers";
+import AdminRoute from "../AdminRoute";
+import AddDoctor from "../../Pages/AddDoctor/AddDoctor";
 
 export const router = createBrowserRouter([
     {
@@ -52,7 +54,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/allUsers',
-                element: <PrivateRoute><AllUsers /></PrivateRoute>
+                element: <AdminRoute><AllUsers /></AdminRoute>
+            },
+            {
+                path: '/dashboard/addDoctor',
+                element: <AdminRoute> <AddDoctor /></AdminRoute>
             }
         ]
 
