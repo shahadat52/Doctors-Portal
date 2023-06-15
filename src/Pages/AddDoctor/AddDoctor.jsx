@@ -8,7 +8,7 @@ const AddDoctor = () => {
     const navigate = useNavigate()
     const { register, handleSubmit, reset } = useForm();
 
-    const { data: specialties = [],} = useQuery({
+    const { data: specialties = [], } = useQuery({
         queryKey: ['doctorSpecialty'],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/doctorSpecialty')
@@ -20,12 +20,13 @@ const AddDoctor = () => {
 
 
     const handleAddDoctor = (data) => {
+
         const image = data.file[0];
         const formData = new FormData();
         formData.append('image', image)
         const apiKey = process.env.REACT_APP_imgbb_key;
 
-        fetch(`https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`, {
+        fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
             method: 'POST',
             body: formData
         })
@@ -40,10 +41,12 @@ const AddDoctor = () => {
                         specialty: data.specialty,
                         image: imgData.data.url
                     };
+                    console.log(doctorInfo);
                     fetch('http://localhost:5000/doctor', {
                         method: 'POST',
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                            authorization: `bearer ${localStorage.getItem('accessToken')}`
                         },
                         body: JSON.stringify(doctorInfo)
                     })
@@ -93,7 +96,7 @@ const AddDoctor = () => {
                         </label>
                         <select name='specialty' id="specialty"
                             type="text"
-                            {...register('specialty ')} className="py-4 px-2 rounded  w-full  ">
+                            {...register('specialty')} className="py-4 px-2 rounded  w-full  ">
                             {
                                 specialties.map((specialty, i) => <option key={i} className='py-4'>{specialty.name}</option>)
                             }
