@@ -9,9 +9,10 @@ import DnaLoader from '../../../Utilities/DnaLoader';
 
 const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
     const { user, loader, setLoader } = useContext(AuthContext)
-    const { name, slots } = treatment
+    const { name, slots, price } = treatment
     const date = format(selectedDate, 'PP')
 
+    console.log(price);
     const handleBooking = (event) => {
         setLoader(true)
         event.preventDefault();
@@ -28,7 +29,8 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
             patient: patientName,
             slot,
             email,
-            phone
+            phone,
+            price
         }
         fetch('http://localhost:5000/bookings', {
             method: 'POST',
@@ -52,7 +54,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
 
                 }
 
-                else{
+                else {
                     setTreatment(null)
                     toast.error(data.message)
                     setLoader(false)

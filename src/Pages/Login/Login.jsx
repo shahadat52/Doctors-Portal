@@ -6,6 +6,7 @@ import { AuthContext } from '../../Context/AuthContext';
 import Swal from "sweetalert2";
 import { toast } from 'react-hot-toast';
 import { useToken } from '../../../src/Hooks/useToken';
+import DnaLoader from '../../Utilities/DnaLoader';
 
 
 const Login = () => {
@@ -13,7 +14,7 @@ const Login = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
-    const { loginWithEmailAndPassword } = useContext(AuthContext);
+    const { loginWithEmailAndPassword, setLoader, loader } = useContext(AuthContext);
     const [loginEmail, setLoginEmail] = useState('');
     const [token] = useToken(loginEmail);
 
@@ -30,6 +31,7 @@ const Login = () => {
                 const user = result.user;
                 console.log(user);
                 setLoginEmail(data.email);
+                setLoader(false)
                 toast.success('Successfully login');
             });
     };
@@ -111,6 +113,9 @@ const Login = () => {
                         >
                             Log in
                         </button>
+                        {
+                            loader && <DnaLoader />
+                        }
                         <p className='text-center text-xs'>New to Doctors-Portal <Link to="/signUp" className="font-medium text-red-200 hover:text-gray-200">
                             Create a new account
                         </Link> </p>

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
 const ConfirmModal = ({ handleDoctorDelete, doctorInfo }) => {
-    const [inputValue, setInputValue] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-
 
     return (
         <div>
@@ -18,7 +16,6 @@ const ConfirmModal = ({ handleDoctorDelete, doctorInfo }) => {
                         type="text"
                         placeholder={`Write ${doctorInfo.name}`}
                         onChange={(e) => {
-                            setInputValue(e.target.value);
                             setIsButtonDisabled(e.target.value !== doctorInfo.name);
                         }}
                         className="border border-gray-300 px-5 rounded-md text-sm w-3/4 py-2"

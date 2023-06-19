@@ -42,8 +42,9 @@ const AvailableAppointments = ({ selectedDate }) => {
     // }, [])
     if (isLoading) {
         return <DnaLoader />
-            
+
     }
+    console.log(availableOptions);
 
     return (
         <section>
