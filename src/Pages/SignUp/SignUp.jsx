@@ -1,4 +1,4 @@
-import React, { useContext, useState, } from 'react';
+import React, { useContext, useEffect, useState, } from 'react';
 import logo from '../../assets/images/Doctor Logo.png'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
@@ -13,17 +13,20 @@ const SignUp = () => {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const { createUser, updateUser, setLoader, loader } = useContext(AuthContext)
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    // const location = useLocation();
+    // const from = location.state?.from?.pathname || "/";
     const [signUpEmail, setSignUpEmail] = useState('')
     const [token] = useToken(signUpEmail)
+    const navigate = useNavigate();
 
 
-    if (token) {
-        console.log('alhamdulillah token set hoyeche');
-        navigate('/')
-    }
+    useEffect(() => {
+        if (token) {
+            console.log('alhamdulillah token set hoyeche');
+            navigate('/');
+        }
+    }, [token, navigate]);
+
     const handleSignUp = data => {
         const name = data.FName + ' ' + data.LName;
         createUser(data.email, data.password)
@@ -31,7 +34,7 @@ const SignUp = () => {
                 const userInfo = {
                     displayName: data.FName + ' ' + data.LName, photoURL: data.photo
                 };
-                updateUser(userInfo)
+                updateUser(userInfo)  // user name and email save
                     .then(() => {
                         saveUser(data.email, name)
                         setLoader(false)
@@ -50,19 +53,21 @@ const SignUp = () => {
                 Swal.fire("Opps", error.message, "error");
             });
 
+        // user info save to database
         const saveUser = (email, name) => {
             const user = { email, name };
             fetch('http://localhost:5000/users', {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json'
+                    'content-type': 'application/json',
                 },
                 body: JSON.stringify(user)
             })
                 .then(res => res.json())
                 .then(data => {
+                    console.log(data);
                     setSignUpEmail(email);
-                    toast.success('User data saved')
+                    toast.success('User data saved to DB')
                 })
         };
 

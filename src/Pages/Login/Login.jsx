@@ -10,13 +10,14 @@ import DnaLoader from '../../Utilities/DnaLoader';
 
 
 const Login = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || '/';
+
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const { loginWithEmailAndPassword, setLoader, loader } = useContext(AuthContext);
     const [loginEmail, setLoginEmail] = useState('');
     const [token] = useToken(loginEmail);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     useEffect(() => {
         if (token) {
