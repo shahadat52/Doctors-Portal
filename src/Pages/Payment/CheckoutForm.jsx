@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { toast } from 'react-hot-toast';
-import Swal from 'sweetalert2';
 import DnaLoader from '../../Utilities/DnaLoader';
+import { useNavigate } from 'react-router-dom';
+
 
 const CheckoutForm = ({ booking }) => {
     const [cardError, setCardError] = useState('')
@@ -10,12 +11,13 @@ const CheckoutForm = ({ booking }) => {
     const [transaction, setTransaction] = useState('')
     const [success, setSuccess] = useState('')
     const [processing, setProcessing] = useState(false)
+    const navigate = useNavigate()
 
 
     const stripe = useStripe();
     const elements = useElements();
 
-    const { patient, price, email } = booking;
+    const { patient, price, email, _id } = booking;
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
@@ -73,10 +75,36 @@ const CheckoutForm = ({ booking }) => {
             return
         }
         if (paymentIntent.status === 'succeeded') {
-            setTransaction(paymentIntent.id)
-            setSuccess(paymentIntent.status)
-            // toast.success('payment success')
+
+            const paymentInfo = {
+                price,
+                transactionId: paymentIntent.id,
+                email,
+                name: patient,
+                bookingId: _id
+
+            }
+            fetch('http://localhost:5000/payment', {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify(paymentInfo)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    setTransaction(paymentIntent.id)
+                    setSuccess(paymentIntent.status)
+                    toast.success('Status Updated')
+                    navigate('/dashboard')
+
+                })
+
         }
+
+
         setProcessing(false)
         console.log(paymentIntent);
         console.log(confirmError);

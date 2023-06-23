@@ -65,9 +65,15 @@ const SignUp = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+
+                    if (data.acknowledge) {
+                        console.log(data);
+                        setSignUpEmail(email);
+                        toast.success('User data saved to DB')
+                        return;
+                    }
                     setSignUpEmail(email);
-                    toast.success('User data saved to DB')
+                    toast.success('User data already saved to DB')
                 })
         };
 

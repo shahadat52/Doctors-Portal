@@ -30,8 +30,18 @@ const Footer = () => {
 
                 </div>
             </footer>
-            <p className='text-center pb-11 text-sm'>Copyright © 2023 - All right reserved</p>
+            <p className="text-black text-center text-sm">© 2023 Doctors Portal. All rights reserved. Developed by <span className="text-black">Shahadat Hossain</span></p>
+            
         </footer>
+
+        // <footer className="bg-gray-800 py-4">
+        //     <div className="container mx-auto px-4">
+        //         <div className="flex items-center justify-center">
+        //             <p className="text-gray-300 text-sm">© 2023 Doctors Portal. All rights reserved.</p>
+        //             <p className="ml-4 text-gray-300 text-sm">Developed by <span className="text-white">Shahadat Hossain</span></p>
+        //         </div>
+        //     </div>
+        // </footer>
     );
 };
 

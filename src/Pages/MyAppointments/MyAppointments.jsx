@@ -27,7 +27,6 @@ const MyAppointments = () => {
             <p className='text-2xl font-bold mb-7'>My Appointments: {bookings.length}</p>
             <div className="overflow-x-auto">
                 <table className="table w-full">
-                    {/* head */}
                     <thead>
                         <tr className='text-center'>
                             <th>No</th>
@@ -49,10 +48,7 @@ const MyAppointments = () => {
                                 <td>{booking.treatment}</td>
                                 <td>
                                     {
-                                        booking.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`} ><button className='btn btn-sm btn-primary'>PAY</button></Link>
-                                    }
-                                    {
-                                        // booking.price && booking.paid ? <button className='btn btn-primary'>PAY</button> : <button className='btn btn-primary'>PAY</button>
+                                        booking.paid ? <button className='btn btn-sm bg-[#096931] '><span className='text-white'>Paid</span></button> : <Link to={`/dashboard/payment/${booking._id}`} ><button className='btn btn-sm btn-primary'>PAY</button></Link>
                                     }
                                 </td>
                             </tr>)

@@ -8,7 +8,7 @@ import ButtonPrimary from '../../../Utilities/ButtonPrimary';
 const Banner = () => {
 
     return (
-        <div className="hero pb-[223px]  " style={{
+        <div className="hero pb-[223px] mt-16  " style={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

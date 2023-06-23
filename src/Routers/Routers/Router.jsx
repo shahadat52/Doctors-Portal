@@ -15,6 +15,7 @@ import AddDoctor from "../../Pages/AddDoctor/AddDoctor";
 import ManageDoctors from "../../Pages/ManageDoctors/ManageDoctors";
 import Payment from "../../Pages/Payment/Payment";
 import ErrorPage from "../../Pages/Shared/ErrorPage/ErrorPage";
+import Contract from "../../Pages/Contract/Contract";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <Login></Login>
+            },
+            {
+                path: '/contactUs',
+                element: <Contract />
             },
             {
                 path: '/signUp',
@@ -58,6 +63,7 @@ export const router = createBrowserRouter([
                 path: '/dashboard',
                 element: <MyAppointments />
             },
+
             {
                 path: '/dashboard/allUsers',
                 element: <AdminRoute><AllUsers /></AdminRoute>

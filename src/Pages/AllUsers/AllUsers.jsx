@@ -12,7 +12,6 @@ const AllUsers = () => {
             return data
         }
     });
-    console.log(AllUsers);
 
     const handleAdmin = id => {
         fetch(`http://localhost:5000/users/admin/${id}`, {
@@ -54,7 +53,7 @@ const AllUsers = () => {
                                 <th>{user.name}</th>
                                 <td>{user.email}</td>
                                 {
-                                    user.role ? <td><button className='btn btn-primary'>Admin</button></td> : <td onClick={() => handleAdmin(user._id)}><button className='btn btn-primary'>Make Admin</button></td>
+                                    user.role ? <td><button className='btn bg-[#399e63] btn-sm '><span className='text-white'>Admin</span></button></td> : <td onClick={() => handleAdmin(user._id)}><button className='btn btn-sm btn-primary'>Make Admin</button></td>
                                 }
                             </tr>)
                         }
