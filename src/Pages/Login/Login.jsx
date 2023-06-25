@@ -34,6 +34,11 @@ const Login = () => {
                 setLoginEmail(data.email);
                 setLoader(false)
                 toast.success('Successfully login');
+            })
+            .catch((error) => {
+                console.error(error);
+                setLoader(false)
+                Swal.fire("Opps", error.message, "error");
             });
     };
     return (

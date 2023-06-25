@@ -1,8 +1,10 @@
+import { useContext } from "react";
+import { AuthContext } from "../../../Context/AuthContext";
+import { Link } from "react-router-dom";
 
 const AvailableAppointment = ({ availableOption, setTreatment }) => {
     const { name, slots, price } = availableOption
-
-
+    const { user } = useContext(AuthContext)
 
     return (
         <div className=' rounded-2xl w-[425px] h-[230px] shadow-md text-center mx-auto' >
@@ -11,12 +13,19 @@ const AvailableAppointment = ({ availableOption, setTreatment }) => {
             <p>{slots.length} {slots.length > 1 ? 'SPACES' : 'SPACE'} AVAILABLE</p>
             <p>Price: $ {price}</p>
             <div className='justify-center flex pb-10 pt-4'>
-                <label
-                    disabled={slots.length === 0}
-                    onClick={() => setTreatment(availableOption)}
-                    htmlFor="booking-modal"
-                    className="btn bg-gradient-to-r from-primary to-secondary text-white"
-                >BOOKING APPOINTMENT</label>
+                {
+                    !user?.email ? <Link to='/login' >
+                        <label
+                            className="btn bg-gradient-to-r from-primary to-secondary text-white"
+                        >PLEASE LOGIN FIRST</label>
+                    </Link> :
+                        <label
+                            disabled={slots.length === 0}
+                            onClick={() => setTreatment(availableOption)}
+                            htmlFor="booking-modal"
+                            className="btn bg-gradient-to-r from-primary to-secondary text-white"
+                        >BOOKING APPOINTMENT</label>
+                }
             </div>
         </div>
     );

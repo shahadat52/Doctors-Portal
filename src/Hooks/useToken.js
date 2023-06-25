@@ -4,7 +4,7 @@ export const useToken = email => {
     const [token, setToken] = useState('');
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/jwt?email=${email}`)
+            fetch(`https://doctors-portal-server-omega-smoky.vercel.app/jwt?email=${email}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.accessToken) {
@@ -29,7 +29,7 @@ export const useToken = email => {
     //         let isMounted = true;
 
     //         if (email) {
-    //             fetch(`http://localhost:5000/jwt?email=${email}`)
+    //             fetch(`https://doctors-portal-server-omega-smoky.vercel.app/jwt?email=${email}`)
     //                 .then(res => res.json())
     //                 .then(data => {
     //                     if (isMounted && data.accessToken) {

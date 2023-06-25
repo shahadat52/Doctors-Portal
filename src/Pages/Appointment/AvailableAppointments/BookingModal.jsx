@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import React, { useContext } from 'react';
-import Swal from 'sweetalert2'
 import { AuthContext } from '../../../Context/AuthContext';
 import { toast } from 'react-hot-toast';
 import DnaLoader from '../../../Utilities/DnaLoader';
@@ -32,7 +31,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
             phone,
             price
         }
-        fetch('http://localhost:5000/bookings', {
+        fetch('https://doctors-portal-server-omega-smoky.vercel.app/bookings', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

@@ -7,14 +7,14 @@ const AllUsers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['allUsers'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/allUsers');
+            const res = await fetch('https://doctors-portal-server-omega-smoky.vercel.app/allUsers');
             const data = await res.json();
             return data
         }
     });
 
     const handleAdmin = id => {
-        fetch(`http://localhost:5000/users/admin/${id}`, {
+        fetch(`https://doctors-portal-server-omega-smoky.vercel.app/users/admin/${id}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',

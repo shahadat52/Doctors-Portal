@@ -11,7 +11,7 @@ const AddDoctor = () => {
     const { data: specialties = [], } = useQuery({
         queryKey: ['doctorSpecialty'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/doctorSpecialty')
+            const res = await fetch('https://doctors-portal-server-omega-smoky.vercel.app/doctorSpecialty')
             const data = res.json();
             return data
         }
@@ -42,7 +42,7 @@ const AddDoctor = () => {
                         image: imgData.data.url
                     };
                     console.log(doctorInfo);
-                    fetch('http://localhost:5000/doctor', {
+                    fetch('https://doctors-portal-server-omega-smoky.vercel.app/doctor', {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

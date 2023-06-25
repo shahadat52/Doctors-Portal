@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { async } from 'q';
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
@@ -10,7 +9,7 @@ const ManageDoctors = () => {
     const { data: doctors = [], refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/doctors?email=${user.email}`, {
+            const res = await fetch(`https://doctors-portal-server-omega-smoky.vercel.app/doctors?email=${user.email}`, {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`,
                 }
@@ -20,7 +19,7 @@ const ManageDoctors = () => {
         }
     })
     const handleDoctorDelete = doctor => {
-        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+        fetch(`https://doctors-portal-server-omega-smoky.vercel.app/doctors/${doctor._id}`, {
             method: 'DELETE',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`

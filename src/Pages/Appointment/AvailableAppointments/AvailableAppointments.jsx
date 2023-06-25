@@ -1,19 +1,21 @@
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AvailableAppointment from './AvailableAppointment';
 import BookingModal from './BookingModal';
 import { useQuery } from '@tanstack/react-query';
 import DnaLoader from '../../../Utilities/DnaLoader';
+import { AuthContext } from '../../../Context/AuthContext';
 
 const AvailableAppointments = ({ selectedDate }) => {
     const date = format(selectedDate, 'PP')
+    const { user } = useContext(AuthContext)
 
     // treatment is just another name of appointment option it contain name,_id,slots 
     const [treatment, setTreatment] = useState(null)
 
     const { data: availableOptions = [], refetch, isLoading } = useQuery({
         queryKey: ['appointmentOptions', date],
-        queryFn: () => fetch(`http://localhost:5000/appointmentOptions?date=${date}`)
+        queryFn: () => fetch(`https://doctors-portal-server-omega-smoky.vercel.app/appointmentOptions?date=${date}`)
             .then(res => res.json())
     })
 
@@ -21,7 +23,7 @@ const AvailableAppointments = ({ selectedDate }) => {
     // const {data: availableOptions = [] } = useQuery({
     //     queryKey: ['appointmentOptions'],
     //     queryFn: async() => {
-    //         const res = await fetch('http://localhost:5000/appointmentOptions')
+    //         const res = await fetch('https://doctors-portal-server-omega-smoky.vercel.app/appointmentOptions')
     //         const data = await res.json()
     //         return data
     //     }
@@ -31,12 +33,12 @@ const AvailableAppointments = ({ selectedDate }) => {
     // Using fetch
     // const { data: availableOptions = [] } = useQuery({
     //     queryKey: ['appointmentOptions'],
-    //     queryFn: () => fetch('http://localhost:5000/appointmentOptions')
+    //     queryFn: () => fetch('https://doctors-portal-server-omega-smoky.vercel.app/appointmentOptions')
     //         .then(res => res.json())
     // })
 
     // useEffect(() => {
-    //     fetch('http://localhost:5000/appointmentOptions')
+    //     fetch('https://doctors-portal-server-omega-smoky.vercel.app/appointmentOptions')
     //         .then(res => res.json())
     //         .then(data => setAvailableOptions(data))
     // }, [])
@@ -44,7 +46,6 @@ const AvailableAppointments = ({ selectedDate }) => {
         return <DnaLoader />
 
     }
-    console.log(availableOptions);
 
     return (
         <section>
@@ -63,15 +64,14 @@ const AvailableAppointments = ({ selectedDate }) => {
                 }
             </div>
             {
-                treatment && <BookingModal
-                    treatment={treatment}
-                    selectedDate={selectedDate}
-                    setTreatment={setTreatment}
-                    refetch={refetch}
-
+                treatment && user && <BookingModal
+                treatment={treatment}
+            selectedDate={selectedDate}
+            setTreatment={setTreatment}
+            refetch={refetch}
                 ></BookingModal>
             }
-        </section>
+        </section >
     );
 };
 

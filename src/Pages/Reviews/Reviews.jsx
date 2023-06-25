@@ -1,10 +1,8 @@
 import React from 'react';
 import quote from '../../assets/icons/quote.svg'
-import toast, { Toaster } from 'react-hot-toast';
 import ReviewCards from '../Home/PatientsSay/ReviewCards';
 
 const Reviews = () => {
-    const notify = () => toast('Here is your toast.');
     return (
         <div>
             <div className='px-6 flex justify-between mb-36'>

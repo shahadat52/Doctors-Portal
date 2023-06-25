@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/appointment',
-                element: <Appointment></Appointment>
+                element:<Appointment></Appointment>
             },
             {
                 path: '/reviews',
@@ -78,9 +78,10 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/payment/:id',
-                loader: ({ params }) => fetch(`http://localhost:5000/payment/${params.id}`),
+                loader: ({ params }) => fetch(`https://doctors-portal-server-omega-smoky.vercel.app/payment/${params.id}`),
                 element: <Payment></Payment>
             }
+
         ]
 
     }

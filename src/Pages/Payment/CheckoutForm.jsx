@@ -2,60 +2,58 @@ import React, { useEffect, useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { toast } from 'react-hot-toast';
 import DnaLoader from '../../Utilities/DnaLoader';
-import { useNavigate } from 'react-router-dom';
-
 
 const CheckoutForm = ({ booking }) => {
-    const [cardError, setCardError] = useState('')
-    const [clientSecret, setClientSecret] = useState("");
-    const [transaction, setTransaction] = useState('')
-    const [success, setSuccess] = useState('')
+    const { price, _id, patient, email } = booking;
+    const [clientSecret, setClientSecret] = useState("")
+    const [cardError, setCardError] = useState("");
+    const [transaction, setTransaction] = useState("")
     const [processing, setProcessing] = useState(false)
-    const navigate = useNavigate()
-
 
     const stripe = useStripe();
     const elements = useElements();
 
-    const { patient, price, email, _id } = booking;
-
     useEffect(() => {
-        // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:5000/create-payment-intent", {
+
+        fetch("https://doctors-portal-server-omega-smoky.vercel.app/create-payment-intent", {
             method: "POST",
             headers: {
-                "content-Type": "application/json",
+                "Content-Type": "application/json",
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
             },
-            body: JSON.stringify({ price }),
+            body: JSON.stringify(booking),
         })
             .then((res) => res.json())
             .then((data) => setClientSecret(data.clientSecret));
-    }, [price]);
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    }, [booking]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setCardError('')
+        setTransaction('')
         setProcessing(true)
         if (!stripe || !elements) {
             return;
         }
 
         const card = elements.getElement(CardElement);
-
-        if (card === null) {
+        if (card == null) {
             return;
-        }
+        };
 
-        const { error, } = await stripe.createPaymentMethod({
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
-            card,
-        });
-
+            card
+        })
         if (error) {
-            console.log('[error]', error);
+            setProcessing(false)
             setCardError(error.message)
-        } else {
-            setCardError('')
+            console.log('[error]', error);
         }
+        else (
+            console.log('[paymentMethod]', paymentMethod)
+        );
+
         const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
             clientSecret,
             {
@@ -63,19 +61,17 @@ const CheckoutForm = ({ booking }) => {
                     card: card,
                     billing_details: {
                         name: patient,
-                        email: email
+                        email: email,
                     },
                 },
             },
         );
-        if (!paymentIntent) {
+        if (confirmError) {
             setCardError(confirmError.message)
             setProcessing(false)
-            setSuccess('')
-            return
+            return;
         }
         if (paymentIntent.status === 'succeeded') {
-
             const paymentInfo = {
                 price,
                 transactionId: paymentIntent.id,
@@ -84,34 +80,34 @@ const CheckoutForm = ({ booking }) => {
                 bookingId: _id
 
             }
-            fetch('http://localhost:5000/payment', {
-                method: "POST",
+            fetch('https://doctors-portal-server-omega-smoky.vercel.app/payment', {
+                method: 'POST',
                 headers: {
-                    'content-type': 'application/json',
+                    "content-type": "application/json",
                     authorization: `bearer ${localStorage.getItem('accessToken')}`
                 },
                 body: JSON.stringify(paymentInfo)
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
                     setTransaction(paymentIntent.id)
-                    setSuccess(paymentIntent.status)
-                    toast.success('Status Updated')
-                    navigate('/dashboard')
-
+                    toast.success('payment successful')
+                    setProcessing(false)
+                    console.log(data);
                 })
+                .catch(error => {
+                    setProcessing(false)
+                    setCardError(error.message)
+                    console.error('Error:', error);
+                });
 
         }
 
-
-        setProcessing(false)
-        console.log(paymentIntent);
-        console.log(confirmError);
     };
+
     return (
         <form onSubmit={handleSubmit}>
-            <CardElement
+            <CardElement className='mt-10'
                 options={{
                     style: {
                         base: {
@@ -127,19 +123,21 @@ const CheckoutForm = ({ booking }) => {
                     },
                 }}
             />
-            <button className='btn btn-primary btn-sm mt-2' type="submit" disabled={!stripe || !clientSecret || processing}>
+            <button type="submit" className='btn btn-sm btn-primary mt-5' disabled={!stripe || !clientSecret}>
                 Pay
             </button>
             {
-                processing && <DnaLoader />
-            }
-            {
-                success && <>
-                    <p className='text-green-500'>Congratulation your payment successful </p>
-                    <p>Transaction Id {transaction}</p>
+                transaction && <>
+                    <p className='text-green-500 font-semibold text-xl'>Congratulation Your payment successful</p>
+                    <p>Transaction Id is <strong>{transaction}</strong></p>
                 </>
             }
-            <p className="text-red-500">{cardError}</p>
+            {
+                cardError && <p className="text-red-500">{cardError}</p>
+            }
+            {
+                processing && <DnaLoader />
+            }
         </form>
     );
 };

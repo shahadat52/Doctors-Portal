@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, } from 'react';
 import logo from '../../assets/images/Doctor Logo.png'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { AuthContext } from '../../Context/AuthContext';
 import Swal from "sweetalert2";
@@ -11,7 +11,7 @@ import { useToken } from '../../../src/Hooks/useToken';
 
 const SignUp = () => {
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit,  formState: { errors } } = useForm();
     const { createUser, updateUser, setLoader, loader } = useContext(AuthContext)
     // const location = useLocation();
     // const from = location.state?.from?.pathname || "/";
@@ -56,7 +56,7 @@ const SignUp = () => {
         // user info save to database
         const saveUser = (email, name) => {
             const user = { email, name };
-            fetch('http://localhost:5000/users', {
+            fetch('https://doctors-portal-server-omega-smoky.vercel.app/users', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json',
@@ -66,19 +66,21 @@ const SignUp = () => {
                 .then(res => res.json())
                 .then(data => {
 
-                    if (data.acknowledge) {
+                    if (data.acknowledge === false) {
                         console.log(data);
                         setSignUpEmail(email);
-                        toast.success('User data saved to DB')
+                        toast.success(data.message)
+                        console.log(data.message);
                         return;
                     }
                     setSignUpEmail(email);
-                    toast.success('User data already saved to DB')
+                    toast.success('User data saved to DB')
+
                 })
         };
 
         // const getAccessToken = (email) => {
-        //     fetch(`http://localhost:5000/jwt?email=${email}`)
+        //     fetch(`https://doctors-portal-server-omega-smoky.vercel.app/jwt?email=${email}`)
         //         .then(res => res.json())
         //         .then(data => {
         //             if (data.accessToken) {

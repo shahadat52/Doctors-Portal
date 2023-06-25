@@ -23,6 +23,9 @@ const Navbar = () => {
     const menuItems = <>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/appointment">Appointment</Link></li>
+        {/* {
+            user?.email && <li><Link to="/appointment">Appointment</Link></li>
+        } */}
         <li><Link to="/about">About</Link> </li>
         <li><Link to="/contactUs">Contact Us</Link></li>
         {
@@ -50,7 +53,7 @@ const Navbar = () => {
     </>
     return (
         <div className=''>
-            <div className="navbar flex justify-between   bg-slate-100 bg-transparent">
+            <div className="navbar flex justify-between   bg-slate-100 ">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
