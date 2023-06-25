@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../../../assets/images/Doctor Logo.png'
 import { AuthContext } from '../../../Context/AuthContext';
 import Swal from "sweetalert2";
@@ -21,17 +21,40 @@ const Navbar = () => {
     }
 
     const menuItems = <>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/appointment">Appointment</Link></li>
-        {/* {
-            user?.email && <li><Link to="/appointment">Appointment</Link></li>
-        } */}
-        <li><Link to="/about">About</Link> </li>
-        <li><Link to="/contactUs">Contact Us</Link></li>
+        <li><NavLink to="/"
+            className={({ isActive }) =>
+                isActive
+                    ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                    : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+            }
+        >Home</NavLink></li>
+        <li><NavLink className={({ isActive }) =>
+            isActive
+                ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+        } to="/appointment">Appointment</NavLink></li>
+        <li><NavLink className={({ isActive }) =>
+            isActive
+                ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                : " tracking-wide text-black   transition-colors duration-200 hover:text-deep-purple-accent-400"
+        } to="/about">About</NavLink> </li>
+        <li><NavLink className={({ isActive }) =>
+            isActive
+                ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+        } to="/contactUs">Contact Us</NavLink></li>
         {
             user?.uid ? <>
-                <li><Link to="/reviews">Reviews</Link></li>
-                <li><Link to="/dashboard">Dashboard</Link></li>
+                <li><NavLink className={({ isActive }) =>
+                    isActive
+                        ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                        : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+                } to="/reviews">Reviews</NavLink></li>
+                <li><NavLink className={({ isActive }) =>
+                    isActive
+                        ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                        : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+                } to="/dashboard">Dashboard</NavLink></li>
 
 
                 <div className="dropdown dropdown-bottom dropdown-end">
@@ -40,7 +63,7 @@ const Navbar = () => {
                     </div></label>
                     <div tabIndex={0} className="dropdown-content bg-green-300     menu p-2 shadow  rounded-box w-52">
                         <div className="card-body">
-                            <li onClick={handleSignOut}><Link>SingOut</Link></li>
+                            <li onClick={handleSignOut}><NavLink>SingOut</NavLink></li>
                         </div>
                     </div>
                 </div>
@@ -48,7 +71,11 @@ const Navbar = () => {
 
 
 
-            </> : <li><Link to="/login">Login</Link></li>
+            </> : <li><NavLink className={({ isActive }) =>
+                isActive
+                    ? "font-bold text-lg tracking-wide text-primary transition-colors duration-200 hover:text-deep-purple-accent-400"
+                    : " tracking-wide text-black  transition-colors duration-200 hover:text-deep-purple-accent-400"
+            } to="/login">Login</NavLink></li>
         }
     </>
     return (
